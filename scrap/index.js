@@ -16,11 +16,6 @@ types.forEach(function (type) {
       character: '.',
       url: '@href'
   })
-  // .follow('@href')
-  // .find('.proverbtable')
-  // .set({
-  //   meanings: ['tr']
-  // })
   .data(function (data) {
     if (Object.keys(data).length) {
       cnt++
@@ -53,5 +48,4 @@ types.forEach(function (type) {
     }
   })
   .error(console.error)
-  // .debug(console.info)
 })
