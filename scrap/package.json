@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "osmosis": "^1.1.4"
+  }
+}
