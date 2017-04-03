@@ -1,6 +1,8 @@
 # how to 汉语
 Learn how to write Chinese characters.
 
+Use it at [https://how-to-hanyu.surge.sh](https://how-to-hanyu.surge.sh).
+
 ![Demonstration](https://media.giphy.com/media/3oKIPfA5MCyokC9Kfe/giphy.gif)
 
 ## How did you do this?
