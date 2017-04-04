@@ -11,7 +11,7 @@
 
 #search input[type='search'] {
   font-size: 28px;
-  max-width: 400px;
+  width: 280px;
   background-color: #555;
   border: 0;
   color: #fff;
@@ -29,6 +29,7 @@
   width: 150px;
   padding: 10px 0;
   font-size: 14px;
+  text-transform: capitalize;
   cursor: pointer;
 }
 
@@ -76,16 +77,32 @@
   margin-bottom: 20px;
 }
 
-#results a {
+#results .link {
   text-decoration: none;
   color: blue;
   padding-bottom: 3px;
 }
 
-#results a:hover, #results a.selected {
+#results .link:hover, #results .link.selected {
   border-bottom: 2px solid;
 }
 
 #current-character {
   margin-top: 20px;
+}
+
+#current-character button {
+  border: 3px solid;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #fff;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+#current-character button:hover, #current-character button:active {
+  border-style: double;
+  text-decoration: underline;
+  cursor: pointer;
+  outline: none;
 }

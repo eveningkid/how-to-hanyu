@@ -9,12 +9,16 @@ const types = {
   TRADITIONAL: 'traditional',
 }
 
+const currentCharacterInitialState = {
+  id: '',
+}
+
 class App extends React.Component {
   constructor() {
     super()
 
     this.state = {
-      currentCharacter: '',
+      currentCharacter: currentCharacterInitialState,
       search: '',
       type: types.SIMPLIFIED,
       results: [],
@@ -41,7 +45,7 @@ class App extends React.Component {
 
   handleChange(e) {
     this.setState({
-      currentCharacter: '',
+      currentCharacter: currentCharacterInitialState,
       search: e.target.value,
     }, () => {
       this.handleClick()
@@ -51,6 +55,14 @@ class App extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
     this.handleClick()
+  }
+
+  handleCharacterClick(currentCharacter, e) {
+    e.preventDefault()
+
+    this.handleMouseOver(currentCharacter, () => {
+      this.handleClick()
+    })
   }
 
   handleClick(e) {
@@ -80,8 +92,8 @@ class App extends React.Component {
     this.setState({results})
   }
 
-  handleMouseOver(currentCharacter) {
-    this.setState({currentCharacter})
+  handleMouseOver(currentCharacter, cb=null, e) {
+    this.setState({currentCharacter}, cb && cb(e))
   }
 
   renderResult(result, key) {
@@ -89,13 +101,11 @@ class App extends React.Component {
       return (
         <a
           key={key}
-          rel="noopener noreferrer"
-          href={this.getRemoteUrl.call(this) + result.completeCharacter.href}
-          target="_blank"
-          onTouchStart={this.handleMouseOver.bind(this, result.completeCharacter.id)}
-          onMouseOver={this.handleMouseOver.bind(this, result.completeCharacter.id)}
+          onClick={this.handleCharacterClick.bind(this, result.completeCharacter)}
+          onMouseOver={this.handleMouseOver.bind(this, result.completeCharacter, null)}
           className={classNames(
-            {'selected': result.completeCharacter.id === this.state.currentCharacter}
+            'link',
+            {'selected': result.completeCharacter.id === this.state.currentCharacter.id}
           )}
         >
           {result.character}
@@ -111,6 +121,13 @@ class App extends React.Component {
   }
 
   render() {
+    const {
+      currentCharacter,
+      results,
+      search,
+      type,
+    } = this.state
+
     return (
       <div className="App">
         <form
@@ -119,46 +136,54 @@ class App extends React.Component {
         >
           <input
             type="search"
-            value={this.state.search}
+            value={search}
             onChange={this.handleChange.bind(this)}
             placeholder="Type here..."
           />
         </form>
 
         <div id="type-switch">
-          <div
-            className={classNames(
-              'type',
-              {'selected': this.state.type === types.SIMPLIFIED}
-            )}
-            onClick={this.switchType.bind(this, types.SIMPLIFIED)}
-          >
-            Simplified
-          </div>
-
-          <div
-            className={classNames(
-              'type',
-              {'selected': this.state.type === types.TRADITIONAL}
-            )}
-            onClick={this.switchType.bind(this, types.TRADITIONAL)}
-          >
-            Traditional
-          </div>
+          {Object.keys(types).map((currentType, i) => (
+            <div
+              className={classNames(
+                'type',
+                {'selected': types[currentType] === type}
+              )}
+              onClick={this.switchType.bind(this, types[currentType])}
+              key={i}
+            >
+              {types[currentType]}
+            </div>
+          ))}
         </div>
 
         <div id="results">
-          {this.state.results.length ? (
+          {results.length ? (
             <span>
               <p>
-                Hover／long-tap or click the following characters to get more information.
+                Hover／click the following characters to get more information.
               </p>
 
-              {this.state.results.map(this.renderResult.bind(this))}
+              {results.map(this.renderResult.bind(this))}
 
-              {this.state.currentCharacter.length > 0 && (
+              {currentCharacter.id.length > 0 && (
                 <div id="current-character">
-                  <img src={`http://www.learnchineseez.com/read-write/images/${this.state.currentCharacter}.gif`} />
+                  <img
+                    alt={`Character ${currentCharacter.character}`}
+                    src={`http://www.learnchineseez.com/read-write/images/${currentCharacter.id}.gif`}
+                  />
+
+                  <br />
+
+                  <a
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    href={this.getRemoteUrl.call(this) + currentCharacter.href}
+                  >
+                    <button>
+                      More details
+                    </button>
+                  </a>
                 </div>
               )}
             </span>
