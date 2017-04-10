@@ -60,8 +60,12 @@ class App extends React.Component {
   handleCharacterClick(currentCharacter, e) {
     e.preventDefault()
 
-    this.handleMouseOver(currentCharacter, () => {
-      this.handleClick()
+    // Force browser to rerender the current
+    // character image
+    this.setState({currentCharacter: {id: 'a', symbol: '', href: ''}}, () => {
+      this.handleMouseOver(currentCharacter, () => {
+        this.handleClick()
+      })
     })
   }
 
